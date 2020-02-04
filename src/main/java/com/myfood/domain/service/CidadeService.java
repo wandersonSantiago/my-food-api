@@ -1,5 +1,8 @@
 package com.myfood.domain.service;
 
+import java.util.List;
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -28,6 +31,14 @@ public class CidadeService {
 		cidade.setEstado(estado);
 		
 		return repository.save(cidade);
+	}	
+	
+	public List<Cidade> findAll(){
+		return repository.findAll();
+	}
+	
+	public Optional<Cidade> findById(Long cidadeId) {
+		return	repository.findById(cidadeId);		
 	}
 	
 	public void excluir(Long cidadeId) {

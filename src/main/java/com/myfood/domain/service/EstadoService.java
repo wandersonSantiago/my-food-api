@@ -12,8 +12,7 @@ import com.myfood.domain.repository.EstadoRepository;
 
 @Service
 public class EstadoService {
-	
-	
+
 	private final String ESTADO_INEXISTENTE = "Não existe cadastro de estado com código";
 
 	@Autowired
@@ -24,8 +23,8 @@ public class EstadoService {
 	}
 
 	public Estado findById(Long id) {
-		return repository.findById(id).orElseThrow(() -> new EntidadeNaoEncontradaException(
-				String.format(ESTADO_INEXISTENTE + "%d", id)));
+		return repository.findById(id)
+				.orElseThrow(() -> new EntidadeNaoEncontradaException(String.format(ESTADO_INEXISTENTE + "%d", id)));
 	}
 
 	public void excluir(Long estadoId) {
@@ -33,8 +32,7 @@ public class EstadoService {
 			repository.deleteById(estadoId);
 
 		} catch (EmptyResultDataAccessException e) {
-			throw new EntidadeNaoEncontradaException(
-					String.format(ESTADO_INEXISTENTE + " %d", estadoId));
+			throw new EntidadeNaoEncontradaException(String.format(ESTADO_INEXISTENTE + " %d", estadoId));
 
 		} catch (DataIntegrityViolationException e) {
 			throw new EntidadeEmUsoException(

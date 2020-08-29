@@ -29,60 +29,58 @@ public class EstadoResource {
 
 	@Autowired
 	private EstadoRepository repository;
-	
+
 	@Autowired
 	private EstadoService service;
-	
+
 	@GetMapping
 	public List<Estado> listar() {
 		return repository.findAll();
 	}
-	
+
 	@GetMapping("/{estadoId}")
 	public ResponseEntity<Estado> buscar(@PathVariable Long estadoId) {
 		Optional<Estado> estado = repository.findById(estadoId);
-		
+
 		if (estado.isPresent()) {
 			return ResponseEntity.ok(estado.get());
 		}
-		
+
 		return ResponseEntity.notFound().build();
 	}
-	
+
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
 	public Estado adicionar(@RequestBody Estado estado) {
 		return service.salvar(estado);
 	}
-	
+
 	@PutMapping("/{estadoId}")
-	public ResponseEntity<Estado> atualizar(@PathVariable Long estadoId,
-			@RequestBody Estado estado) {
+	public ResponseEntity<Estado> atualizar(@PathVariable Long estadoId, @RequestBody Estado estado) {
 		Estado estadoAtual = repository.findById(estadoId).orElse(null);
-		
+
 		if (estadoAtual != null) {
 			BeanUtils.copyProperties(estado, estadoAtual, "id");
-			
+
 			estadoAtual = service.salvar(estadoAtual);
 			return ResponseEntity.ok(estadoAtual);
 		}
-		
+
 		return ResponseEntity.notFound().build();
 	}
-	
+
 	@DeleteMapping("/{estadoId}")
 	public ResponseEntity<?> remover(@PathVariable Long estadoId) {
 		try {
-			service.excluir(estadoId);	
+			service.excluir(estadoId);
 			return ResponseEntity.noContent().build();
-			
+
 		} catch (EntidadeNaoEncontradaException e) {
 			return ResponseEntity.notFound().build();
-			
+
 		} catch (EntidadeEmUsoException e) {
-			return ResponseEntity.status(HttpStatus.CONFLICT)
-					.body(e.getMessage());
+			return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
 		}
 	}
-	
+
 }

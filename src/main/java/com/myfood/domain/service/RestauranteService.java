@@ -12,18 +12,18 @@ public class RestauranteService {
 
 	@Autowired
 	private RestauranteRepository repository;
-	
+
 	@Autowired
 	private CozinhaService cozinhaService;
-	
+
 	public Restaurante salvar(Restaurante restaurante) {
 		Long cozinhaId = restaurante.getCozinha().getId();
-		
+
 		Cozinha cozinha = cozinhaService.findById(cozinhaId);
-		
+
 		restaurante.setCozinha(cozinha);
-		
+
 		return repository.save(restaurante);
 	}
-	
+
 }

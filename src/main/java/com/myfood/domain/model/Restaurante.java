@@ -52,13 +52,13 @@ public class Restaurante {
 	
 	@JsonIgnore
 	@CreationTimestamp
-	@Column(nullable = false, columnDefinition = "datetime")
-	private LocalDateTime dataCadastro;
+	@Column(nullable = false, columnDefinition = "timestamp")
+	private LocalDateTime dataCadastro =  LocalDateTime.now();
 	
 	@JsonIgnore
 	@UpdateTimestamp
-	@Column(nullable = false, columnDefinition = "datetime")
-	private LocalDateTime dataAtualizacao;
+	@Column(nullable = false, columnDefinition = "timestamp")
+	private LocalDateTime dataAtualizacao =  LocalDateTime.now();
 	
 	@JsonIgnore
 	@ManyToMany

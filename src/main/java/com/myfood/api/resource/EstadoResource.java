@@ -2,6 +2,8 @@ package com.myfood.api.resource;
 
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -37,12 +39,12 @@ public class EstadoResource {
 
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
-	public Estado insert(@RequestBody Estado estado) {
+	public Estado insert(@RequestBody @Valid Estado estado) {
 		return service.insert(estado);
 	}
 
 	@PutMapping("/{estadoId}")
-	public Estado update(@PathVariable Long estadoId, @RequestBody Estado estado) {
+	public Estado update(@PathVariable Long estadoId, @RequestBody @Valid Estado estado) {
 		var estadoAtual = service.findByIdOrFail(estadoId);
 		BeanUtils.copyProperties(estado, estadoAtual, "id");
 		return  service.insert(estadoAtual);

@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.springframework.beans.BeanUtils;
@@ -12,6 +13,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.http.server.ServletServerHttpRequest;
 import org.springframework.util.ReflectionUtils;
+import org.springframework.validation.BeanPropertyBindingResult;
+import org.springframework.validation.SmartValidator;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -24,6 +27,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.myfood.core.validation.ValidationException;
 import com.myfood.domain.exception.CozinhaNaoEncontradaException;
 import com.myfood.domain.exception.NegocioException;
 import com.myfood.domain.model.Restaurante;
@@ -35,6 +39,8 @@ public class RestauranteResource {
 
 	@Autowired
 	private RestauranteService service;
+	@Autowired
+	private SmartValidator validator;
 
 	@GetMapping
 	public List<Restaurante> findAll() {
@@ -47,7 +53,7 @@ public class RestauranteResource {
 	}
 
 	@PostMapping
-	public Restaurante insert(@RequestBody Restaurante restaurante) {
+	public Restaurante insert(@RequestBody @Valid Restaurante restaurante) {
 		restaurante.setId(null);
 		try {
 			return service.insert(restaurante);
@@ -57,7 +63,7 @@ public class RestauranteResource {
 	}
 
 	@PutMapping("/{restauranteId}")
-	public Restaurante update(@PathVariable Long restauranteId, @RequestBody Restaurante restaurante) {
+	public Restaurante update(@PathVariable Long restauranteId, @RequestBody @Valid Restaurante restaurante) {
 		var restauranteAtual = service.findByIdOrFail(restauranteId);
 		BeanUtils.copyProperties(restaurante, restauranteAtual, "id");
 		try {
@@ -71,7 +77,17 @@ public class RestauranteResource {
 	public Restaurante updatePath(@PathVariable Long restauranteId, @RequestBody Map<String, Object> campos, HttpServletRequest request) {
 		var restauranteAtual = service.findByIdOrFail(restauranteId);
 		merge(campos, restauranteAtual, request);
+		validate(restauranteAtual, "restaurante");
 		return update(restauranteId, restauranteAtual);
+	}
+
+	private void validate(Restaurante restaurante, String objectName) {
+		BeanPropertyBindingResult bindingResults = new BeanPropertyBindingResult(restaurante, objectName);
+		validator.validate(restaurante, bindingResults);
+		
+		if(bindingResults.hasErrors()) {
+			throw new ValidationException(bindingResults);
+		}		
 	}
 
 	private void merge(Map<String, Object> dadosOrigem, Restaurante restauranteDestino, HttpServletRequest request) {

@@ -2,6 +2,8 @@ package com.myfood.api.resource;
 
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -36,12 +38,12 @@ public class CidadeResource {
 	}
 
 	@PostMapping
-	public Cidade insert(@RequestBody Cidade cidade) {
+	public Cidade insert(@RequestBody @Valid Cidade cidade) {
 		return service.insert(cidade);
 	}
 
 	@PutMapping("/{cidadeId}")
-	public Cidade update(@PathVariable Long cidadeId, @RequestBody Cidade cidade) {
+	public Cidade update(@PathVariable Long cidadeId, @RequestBody @Valid Cidade cidade) {
 		var cidadeAtual = service.findByIdOrFail(cidadeId);
 		BeanUtils.copyProperties(cidade, cidadeAtual, "id");
 

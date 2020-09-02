@@ -10,7 +10,7 @@ public enum ProblemType {
 	PARAMETRO_INVALIDO("parametro-invalido", "Parâmetro inválido"),
 	RECURSO_NAO_ENCONTRADO("recurso-nao-encontrado", "Recurso não encontrado"),
 	ENTIDADE_EM_USO("entidade-em-uso", "Entidade em uso"),
-	ERRO_NEGOCIO("erro-negocio", "Erro de negocio"),
+	ERRO_NEGOCIO("erro-negocio", "Violação de regra de negócio"),
 	MENSAGEM_INCOMPREENSIVEL("mensagem-incompreensivel", "Mensagem incompreensível");
 	
 	private String title;

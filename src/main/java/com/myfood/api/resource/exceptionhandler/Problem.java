@@ -1,6 +1,6 @@
 package com.myfood.api.resource.exceptionhandler;
 
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -18,7 +18,7 @@ public class Problem {
 	private String type;
 	private String title;
 	private String detail;
-	private LocalDateTime timestamp;	
+	private OffsetDateTime timestamp;	
 	private String userMessage;
 	private List<Field> fields;
 	

@@ -12,6 +12,7 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.groups.ConvertGroup;
 import javax.validation.groups.Default;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.myfood.core.validation.Groups;
 
 import lombok.Data;
@@ -33,6 +34,7 @@ public class Cidade {
 	
 	@Valid
 	@ConvertGroup(from = Default.class, to = Groups.EstadoId.class)
+	@JsonIgnoreProperties(value = "nome" , allowGetters = true)
 	@ManyToOne
 	@JoinColumn(nullable = false)
 	private Estado estado;

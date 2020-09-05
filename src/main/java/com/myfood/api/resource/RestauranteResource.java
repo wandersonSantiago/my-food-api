@@ -27,6 +27,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.myfood.api.model.RestauranteDTO;
 import com.myfood.core.validation.ValidationException;
 import com.myfood.domain.exception.CozinhaNaoEncontradaException;
 import com.myfood.domain.exception.NegocioException;
@@ -48,8 +49,11 @@ public class RestauranteResource {
 	}
 
 	@GetMapping("/{restauranteId}")
-	public Restaurante findById(@PathVariable Long restauranteId) {
-		return service.findByIdOrFail(restauranteId);
+	public RestauranteDTO findById(@PathVariable Long restauranteId) {
+		var restaurante = service.findByIdOrFail(restauranteId);
+		
+		var dto = new RestauranteDTO();
+		return dto;
 	}
 
 	@PostMapping

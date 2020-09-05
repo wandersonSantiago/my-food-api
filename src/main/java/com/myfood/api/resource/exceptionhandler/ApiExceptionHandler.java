@@ -1,6 +1,6 @@
 package com.myfood.api.resource.exceptionhandler;
 
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -139,7 +139,7 @@ public class ApiExceptionHandler  extends ResponseEntityExceptionHandler{
 		
 		if(body == null || body instanceof String)
 			body = Problem.builder()
-			.timestamp(LocalDateTime.now())
+			.timestamp(OffsetDateTime.now())
 			.title( body == null ? status.getReasonPhrase() : (String) body)
 			.status(status.value())
 			.build();	  
@@ -208,7 +208,7 @@ public class ApiExceptionHandler  extends ResponseEntityExceptionHandler{
 				.status(status.value())
 				.type(type.getUri())
 				.title(type.getTitle())
-				.timestamp(LocalDateTime.now())
+				.timestamp(OffsetDateTime.now())
 				.detail(detail);				
 	}
 	

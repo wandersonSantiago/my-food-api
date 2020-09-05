@@ -1,7 +1,7 @@
 package com.myfood.domain.model;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,7 +25,6 @@ import javax.validation.groups.Default;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.myfood.core.validation.Groups;
 import com.myfood.core.validation.TaxaFrete;
 import com.myfood.core.validation.ValorZeroIncluiDescricao;
@@ -61,28 +60,23 @@ public class Restaurante {
 	@JoinColumn(name = "cozinha_id", nullable = false)
 	private Cozinha cozinha;
 	
-	@JsonIgnore
 	@Embedded
 	private Endereco endereco;
 	
-	@JsonIgnore
 	@CreationTimestamp
 	@Column(nullable = false, columnDefinition = "timestamp")
-	private LocalDateTime dataCadastro =  LocalDateTime.now();
+	private OffsetDateTime dataCadastro =  OffsetDateTime.now();
 	
-	@JsonIgnore
 	@UpdateTimestamp
 	@Column(nullable = false, columnDefinition = "timestamp")
-	private LocalDateTime dataAtualizacao =  LocalDateTime.now();
+	private OffsetDateTime dataAtualizacao =  OffsetDateTime.now();
 	
-	@JsonIgnore
 	@ManyToMany
 	@JoinTable(name = "restaurante_forma_pagamento",
 			joinColumns = @JoinColumn(name = "restaurante_id"),
 			inverseJoinColumns = @JoinColumn(name = "forma_pagamento_id"))
 	private List<FormaPagamento> formasPagamento = new ArrayList<>();
 	
-	@JsonIgnore
 	@OneToMany(mappedBy = "restaurante")
 	private List<Produto> produtos = new ArrayList<>();
 	
